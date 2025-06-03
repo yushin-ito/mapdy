@@ -1,7 +1,8 @@
 {
   "common": {
     "choose_from_library": "Choose from library",
-    "take_a_photo": "Take a photo"
+    "take_a_photo": "Take a photo",
+    "cancel": "Cancel"
   },
   "top": {
     "title": "Welcome to Mapdy",

@@ -11,21 +11,15 @@ import {
   Inter_700Bold,
   useFonts,
 } from "@expo-google-fonts/inter";
-import { PortalProvider } from "@tamagui/portal";
-import { setupNativeSheet } from "@tamagui/sheet";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { AppState, useColorScheme } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-// @ts-expect-error
-import { ModalView } from "react-native-ios-modal";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { Toaster } from "sonner-native";
-import { TamaguiProvider } from "tamagui";
-
-setupNativeSheet("ios", ModalView);
+import { PortalProvider, TamaguiProvider } from "tamagui";
 
 SplashScreen.preventAutoHideAsync();
 

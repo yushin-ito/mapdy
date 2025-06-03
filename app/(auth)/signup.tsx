@@ -54,7 +54,7 @@ const SignupPage = () => {
   return (
     <YStack flex={1} items="center" justify="center" px="$12" gap="$6">
       <View position="absolute" t="$16" l="$5">
-        <TouchableOpacity activeOpacity={0.6} onPress={() => router.back()}>
+        <TouchableOpacity activeOpacity={0.6} onPress={router.back}>
           <ChevronLeft size="$8" />
         </TouchableOpacity>
       </View>

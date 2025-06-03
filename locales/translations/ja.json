@@ -1,7 +1,8 @@
 {
   "common": {
     "choose_from_library": "ライブラリから選ぶ",
-    "take_a_photo": "写真を撮る"
+    "take_a_photo": "写真を撮る",
+    "cancel": "キャンセル"
   },
   "top": {
     "title": "Mapdyへようこそ",
