@@ -23,6 +23,8 @@ import type { z } from "zod/v4";
 const avatarUrlSchema = onboardingSchema.pick({ avatarUrl: true });
 type FormData = z.infer<typeof avatarUrlSchema>;
 
+console.log("ImagePickerSheet is:", ImagePickerSheet);
+
 const AvatarPage = () => {
   const { t } = useTranslation("onboarding");
   const router = useRouter();
@@ -129,7 +131,9 @@ const AvatarPage = () => {
       <ImagePickerSheet
         open={isOpen}
         onOpenChange={setIsOpen}
-        onImagePicked={(uri) => {}}
+        onImagePicked={(uri) => {
+          console.log(uri);
+        }}
       />
     </>
   );

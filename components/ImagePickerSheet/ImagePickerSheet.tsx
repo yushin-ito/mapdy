@@ -41,20 +41,13 @@ export const ImagePickerSheet = ({
   return (
     <Sheet
       modal
-      native={true}
+      native
       snapPoints={[40]}
       position={position}
       onPositionChange={setPosition}
       dismissOnSnapToBottom
       {...props}
     >
-      <Sheet.Overlay
-        bg="black"
-        opacity={0.5}
-        enterStyle={{ opacity: 0 }}
-        exitStyle={{ opacity: 0 }}
-      />
-      <Sheet.Handle />
       <Sheet.Frame h="$40" gap="$4">
         <Button variant="ghost">
           <Button.Text onPress={pickImage}>

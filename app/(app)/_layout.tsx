@@ -1,6 +1,5 @@
 import { useUser } from "@/hooks/useUser";
-import { Stack, useRouter } from "expo-router";
-import { useEffect } from "react";
+import { Stack } from "expo-router";
 
 const AppLayout = () => {
   const { data: user, isLoading } = useUser();

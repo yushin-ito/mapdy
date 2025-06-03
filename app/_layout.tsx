@@ -11,6 +11,7 @@ import {
   Inter_700Bold,
   useFonts,
 } from "@expo-google-fonts/inter";
+import { PortalProvider } from "@tamagui/portal";
 import { setupNativeSheet } from "@tamagui/sheet";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SplashScreen, Stack } from "expo-router";
@@ -64,13 +65,17 @@ const RootLayout = () => {
           defaultTheme={colorScheme === "dark" ? "dark" : "light"}
         >
           <ThemeProvider>
-            <GestureHandlerRootView>
-              <KeyboardProvider>
-                <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
-                <RootNavigator />
-                <Toaster />
-              </KeyboardProvider>
-            </GestureHandlerRootView>
+            <PortalProvider shouldAddRootHost>
+              <GestureHandlerRootView>
+                <KeyboardProvider>
+                  <StatusBar
+                    style={colorScheme === "dark" ? "light" : "dark"}
+                  />
+                  <RootNavigator />
+                  <Toaster />
+                </KeyboardProvider>
+              </GestureHandlerRootView>
+            </PortalProvider>
           </ThemeProvider>
         </TamaguiProvider>
       </QueryClientProvider>
