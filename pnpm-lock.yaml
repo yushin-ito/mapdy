@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@expo-google-fonts/ibm-plex-sans-jp':
-        specifier: ^0.4.0
-        version: 0.4.0
       '@expo-google-fonts/inter':
         specifier: ^0.4.1
         version: 0.4.1
@@ -903,9 +900,6 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
-
-  '@expo-google-fonts/ibm-plex-sans-jp@0.4.0':
-    resolution: {integrity: sha512-qnjlzeA9tjZ3qMxSVF43+yDDsBXeMtpea8YA0Mu6MAF5RkMGQGYc4vbrd7MSa982jBt7VCzS4WR4ypsxDkmXqA==}
 
   '@expo-google-fonts/inter@0.4.1':
     resolution: {integrity: sha512-ypL+XokTHEG+ie/nxNj/mS38afMrY4Li4oKvTJf9k9XvH7I21qfTGCsDtlZ6nIUWEAy1odoUZISdXT1nfMh4kA==}
@@ -5910,8 +5904,6 @@ snapshots:
 
   '@esbuild/win32-x64@0.25.5':
     optional: true
-
-  '@expo-google-fonts/ibm-plex-sans-jp@0.4.0': {}
 
   '@expo-google-fonts/inter@0.4.1': {}
 
