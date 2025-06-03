@@ -1,0 +1,65 @@
+{
+  "common": {
+    "choose_from_library": "Choose from library",
+    "take_a_photo": "Take a photo"
+  },
+  "top": {
+    "title": "Welcome to Mapdy",
+    "description": "The perfect outfit for you today",
+    "signup": "Sign Up",
+    "login": "Log In"
+  },
+  "signup": {
+    "title": "Sign Up",
+    "description": "Create your account.",
+    "email": "Email",
+    "invalid_email": "Invalid email address.",
+    "submit": "Sign up",
+    "or": "or",
+    "signup_with_provider": "Sign up with {{provider}}",
+    "login": "Log in",
+    "already_have_an_account": "Already have an account?",
+    "success": "Verification email sent. Please check your inbox.",
+    "error": "Something went wrong. Please try again."
+  },
+  "login": {
+    "title": "Log In",
+    "description": "Let's log in to your account.",
+    "email": "Email",
+    "invalid_email": "Invalid email address.",
+    "submit": "Log In",
+    "or": "or",
+    "login_with_provider": "Log in with {{provider}}",
+    "do_not_have_an_account": "Don't have an account yet?",
+    "signup": "Sign Up",
+    "success": "Verification email sent. Please check your inbox.",
+    "error": "Something went wrong. Please try again."
+  },
+  "verify": {
+    "title": "Verification",
+    "description": "Enter your verification code.",
+    "do_not_receive_code": "Did not receive the verification code?",
+    "resend": "Resend",
+    "success": "Verification email resent.",
+    "error": "Something went wrong. Please try again."
+  },
+  "onboarding": {
+    "name": {
+      "title": "Enter your name",
+      "description": "This name will be visible to other users. You can change it later.",
+      "label": "Username",
+      "placeholder": "John Doe",
+      "too_short_name": "Username must be at least 3 characters long.",
+      "too_long_name": "Username must be 24 characters or less.",
+      "submit": "Next",
+      "skip": "Skip"
+    },
+    "avatar": {
+      "title": "Choose an avatar",
+      "description": "This avatar will be visible to other users. You can change it later.",
+      "label": "Avatar",
+      "submit": "Get Started",
+      "skip": "Skip"
+    }
+  }
+}

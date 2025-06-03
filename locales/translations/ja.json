@@ -1,0 +1,65 @@
+{
+  "common": {
+    "choose_from_library": "ライブラリから選ぶ",
+    "take_a_photo": "写真を撮る"
+  },
+  "top": {
+    "title": "Mapdyへようこそ",
+    "description": "今日のあなたにぴったりのコーデ",
+    "signup": "新規登録",
+    "login": "ログイン"
+  },
+  "signup": {
+    "title": "新規登録",
+    "description": "アカウントを作成しましょう",
+    "email": "メールアドレス",
+    "invalid_email": "無効なメールアドレスです。",
+    "submit": "はじめる",
+    "or": "または",
+    "signup_with_provider": "{{provider}}で新規登録",
+    "already_have_an_account": "すでにアカウントをお持ちですか？",
+    "login": "ログイン",
+    "success": "確認メールを送信しました。受信トレイを確認してください。",
+    "error": "エラーが発生しました。もう一度お試しください。"
+  },
+  "login": {
+    "title": "ログイン",
+    "description": "アカウントにログインしましょう。",
+    "email": "メールアドレス",
+    "invalid_email": "無効なメールアドレスです。",
+    "submit": "ログイン",
+    "or": "または",
+    "login_with_provider": "{{provider}}でログイン",
+    "do_not_have_an_account": "すでにアカウントをお持ちですか？",
+    "signup": "新規登録",
+    "success": "確認メールを送信しました。受信トレイを確認してください。",
+    "error": "エラーが発生しました。もう一度お試しください。"
+  },
+  "verify": {
+    "title": "認証コード",
+    "description": "メールアドレスを確認しましょう",
+    "do_not_receive_code": "認証コードを届きませんか？",
+    "resend": "再送信",
+    "success": "確認メールを再送信しました。",
+    "error": "エラーが発生しました。もう一度お試しください。"
+  },
+  "onboarding": {
+    "name": {
+      "title": "お名前を教えてください",
+      "description": "他のユーザーに公開されるお名前です。後から変更することもできます。",
+      "label": "ユーザー名",
+      "placeholder": "山田太郎",
+      "too_short_name": "ユーザー名は3文字以上で入力してください。",
+      "too_long_name": "ユーザー名は24文字以内で入力してください。",
+      "submit": "次へ",
+      "skip": "スキップ"
+    },
+    "avatar": {
+      "title": "アバターを選択してください",
+      "description": "他のユーザーに公開されるアバターです。後から変更することもできます。",
+      "label": "アバター",
+      "submit": "はじめる",
+      "skip": "スキップ"
+    }
+  }
+}
