@@ -1,9 +1,8 @@
 import { Button } from "@/components/Button";
-import { X } from "@tamagui/lucide-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Image, TouchableOpacity, useWindowDimensions } from "react-native";
+import { Image, useWindowDimensions } from "react-native";
 import {
   Gesture,
   GestureDetector,
