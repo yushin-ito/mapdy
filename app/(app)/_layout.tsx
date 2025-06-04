@@ -10,10 +10,8 @@ const AppLayout = () => {
     supabase
       .from("users")
       .select("*")
-      .eq("userId", session?.user.id ?? ""),
-    {
-      enabled: false,
-    }
+      .eq("id", session?.user.id ?? "")
+      .single()
   );
 
   if (isLoading) {

@@ -6,11 +6,11 @@ import { supabase } from "@/utils/supabase";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useInsertMutation } from "@supabase-cache-helpers/postgrest-react-query";
 import { Image, UserRound } from "@tamagui/lucide-icons";
-import { Link, useLocalSearchParams, useRouter } from "expo-router";
-import { useState } from "react";
+import { useLocalSearchParams, usePathname, useRouter } from "expo-router";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Keyboard, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { toast } from "sonner-native";
 import {
@@ -32,12 +32,14 @@ const AvatarPage = () => {
   const { t } = useTranslation("onboarding");
   const { session } = useAuth();
   const router = useRouter();
-  const { name } = useLocalSearchParams<{ name?: string }>();
+  const pathname = usePathname();
+  const { name, uri } = useLocalSearchParams<{ name?: string; uri?: string }>();
   const [isOpen, setIsOpen] = useState(false);
   const {
     control,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<FormData>({
     resolver: standardSchemaResolver(avatarUrlSchema),
   });
@@ -48,7 +50,7 @@ const AvatarPage = () => {
     "*",
     {
       onSuccess: () => {
-        router.push("/(tabs)");
+        router.push("/");
       },
       onError: () => {
         toast.error(t("avatar.error"));
@@ -56,12 +58,28 @@ const AvatarPage = () => {
     }
   );
 
+  useEffect(() => {
+    if (uri) {
+      setValue("avatarUrl", uri);
+    }
+  }, [uri, setValue]);
+
   const onSubmit = (data: FormData) => {
     mutateAsync([
       {
         id: session?.user.id ?? "",
-        name: name ?? "",
+        name: name ?? null,
         avatar_url: data.avatarUrl,
+      },
+    ]);
+  };
+
+  const onSkip = () => {
+    mutateAsync([
+      {
+        id: session?.user.id ?? "",
+        name: name ?? null,
+        avatar_url: null,
       },
     ]);
   };
@@ -87,7 +105,7 @@ const AvatarPage = () => {
             name="avatarUrl"
             control={control}
             defaultValue=""
-            render={({ field: { onChange, value } }) => (
+            render={() => (
               <>
                 <YStack gap="$1.5">
                   <VisuallyHidden>
@@ -99,10 +117,7 @@ const AvatarPage = () => {
                   >
                     <YStack position="relative">
                       <Avatar circular size="$40">
-                        <Avatar.Image
-                          accessibilityLabel="avatar"
-                          src={undefined}
-                        />
+                        <Avatar.Image accessibilityLabel="avatar" src={uri} />
                         <Avatar.Fallback
                           items="center"
                           justify="center"
@@ -147,7 +162,13 @@ const AvatarPage = () => {
                   open={isOpen}
                   onOpenChange={setIsOpen}
                   onImagePicked={(uri) => {
-                    router.push(`/crop?uri=${encodeURIComponent(uri)}`);
+                    router.push({
+                      pathname: "/crop",
+                      params: {
+                        uri,
+                        from: pathname,
+                      },
+                    });
                     setIsOpen(false);
                   }}
                 />
@@ -160,11 +181,9 @@ const AvatarPage = () => {
                 <Button.Text>{t("avatar.submit")}</Button.Text>
               </Button>
             </Form.Trigger>
-            <Link href="/onboarding/avatar" asChild>
-              <Button variant="link" onPress={Keyboard.dismiss}>
-                <Button.Text>{t("avatar.skip")}</Button.Text>
-              </Button>
-            </Link>
+            <Button variant="link" onPress={onSkip}>
+              <Button.Text>{t("avatar.skip")}</Button.Text>
+            </Button>
           </YStack>
         </Form>
       </YStack>

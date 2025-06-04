@@ -26,7 +26,12 @@ const NamePage = () => {
   });
 
   const onSubmit = (data: FormData) => {
-    router.push(`/onboarding/avatar?name=${data.name}`);
+    router.push({
+      pathname: "/onboarding/avatar",
+      params: { name: data.name },
+    });
+
+    Keyboard.dismiss();
   };
 
   return (

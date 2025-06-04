@@ -1,9 +1,5 @@
 import { Button } from "@/components/Button";
-import {
-  FlipType,
-  SaveFormat,
-  useImageManipulator,
-} from "expo-image-manipulator";
+import { SaveFormat, useImageManipulator } from "expo-image-manipulator";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -27,7 +23,7 @@ const AnimatedImage = Animated.createAnimatedComponent(Image);
 
 const CropPage = () => {
   const { t } = useTranslation("crop");
-  const { uri } = useLocalSearchParams<{ uri?: string }>();
+  const { uri, from } = useLocalSearchParams<{ uri: string; from: string }>();
   const { width, height } = useWindowDimensions();
   const insets = useSafeAreaInsets();
 
@@ -152,22 +148,36 @@ const CropPage = () => {
   });
 
   const crop = async () => {
-    if (!uri) {
-      return;
+    if (!size.value) {
+      return {};
     }
 
-    context.crop({
-      originX: radius - translateX.value / scale.value,
-      originY: radius - translateY.value / scale.value,
-      width: diameter / scale.value,
-      height: diameter / scale.value,
-    });
+    context
+      .resize({
+        width: size.value.width,
+        height: size.value.height,
+      })
+      .crop({
+        originX:
+          size.value.width / 2 - (radius + translateX.value) / scale.value,
+        originY:
+          size.value.height / 2 - (radius + translateY.value) / scale.value,
+        width: diameter / scale.value,
+        height: diameter / scale.value,
+      })
+      .resize({
+        width: 512,
+        height: 512,
+      });
     const image = await context.renderAsync();
     const result = await image.saveAsync({
       format: SaveFormat.PNG,
     });
 
-    console.log(result);
+    router.replace({
+      pathname: from,
+      params: { uri: result.uri },
+    });
   };
 
   if (isLoading) {
@@ -187,9 +197,10 @@ const CropPage = () => {
         z="$50"
         items="center"
         justify="space-between"
-        pt={insets.top + 10}
+        h={insets.top + 50}
+        pt="$20"
         px="$6"
-        pb={10}
+        pb="$4"
         bg="black"
       >
         <Button variant="link" onPress={router.back}>
@@ -203,10 +214,10 @@ const CropPage = () => {
         <Animated.View
           style={{
             position: "absolute",
-            top: insets.top + 20,
+            top: insets.top + 50,
             left: 0,
             right: 0,
-            bottom: insets.bottom + 40,
+            bottom: insets.bottom + 50,
             justifyContent: "center",
             alignItems: "center",
           }}
@@ -215,7 +226,7 @@ const CropPage = () => {
           <View
             position="absolute"
             t={
-              (height - insets.top - insets.bottom - 60) / 2 -
+              (height - insets.top - insets.bottom - 100) / 2 -
               (radius + Math.max(width, height) * 1.5)
             }
             l={width / 2 - (radius + Math.max(width, height) * 1.5)}
@@ -228,13 +239,13 @@ const CropPage = () => {
           />
           <View
             position="absolute"
-            t={(height - insets.top - insets.bottom - 60) / 2 - radius}
+            t={(height - insets.top - insets.bottom - 100) / 2 - radius}
             l={width / 2 - radius}
             w={diameter}
             h={diameter}
             rounded={radius}
             borderColor="white"
-            borderWidth={1}
+            borderWidth={2}
             pointerEvents="none"
           />
         </Animated.View>

@@ -6,7 +6,7 @@ import { Sheet, type SheetProps, YStack } from "tamagui";
 import { Button } from "../Button";
 
 interface ImagePickerSheetProps extends SheetProps {
-  onImagePicked: (image: string) => void;
+  onImagePicked: (uri: string) => void;
 }
 
 export const ImagePickerSheet = ({
