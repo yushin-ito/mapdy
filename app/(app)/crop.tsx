@@ -82,11 +82,11 @@ const CropPage = () => {
 
     const offsetX = Math.max(
       (size.value.width * scale.value - diameter) / 2,
-      0
+      0,
     );
     const offsetY = Math.max(
       (size.value.height * scale.value - diameter) / 2,
-      0
+      0,
     );
 
     translateX.value = Math.min(Math.max(translateX.value, -offsetX), offsetX);

@@ -29,7 +29,7 @@ export const OtpInput = ({ onEnter }: OtpInputProps) => {
   } = useForm<FormData>({
     resolver: standardSchemaResolver(otpSchema),
     defaultValues: Object.fromEntries(
-      Array.from({ length: 6 }, (_, i) => [i.toString(), ""])
+      Array.from({ length: 6 }, (_, i) => [i.toString(), ""]),
     ),
   });
 

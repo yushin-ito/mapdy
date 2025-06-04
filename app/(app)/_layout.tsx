@@ -11,7 +11,7 @@ const AppLayout = () => {
       .from("users")
       .select("*")
       .eq("id", session?.user.id ?? "")
-      .single()
+      .single(),
   );
 
   if (isLoading) {

@@ -19,7 +19,7 @@ export const PreviewList = () => {
         });
       }
     },
-    [width]
+    [width],
   );
 
   return (

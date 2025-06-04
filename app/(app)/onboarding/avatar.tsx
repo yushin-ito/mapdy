@@ -55,7 +55,7 @@ const AvatarPage = () => {
       onError: () => {
         toast.error(t("avatar.error"));
       },
-    }
+    },
   );
 
   useEffect(() => {
