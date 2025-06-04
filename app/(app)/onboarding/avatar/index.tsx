@@ -124,7 +124,9 @@ const AvatarPage = () => {
                   open={isOpen}
                   onOpenChange={setIsOpen}
                   onImagePicked={(uri) => {
-                    onChange(uri);
+                    router.push(
+                      `/onboarding/avatar/crop?uri=${encodeURIComponent(uri)}`
+                    );
                     setIsOpen(false);
                   }}
                 />

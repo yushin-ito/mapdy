@@ -2,6 +2,7 @@
   "common": {
     "choose_from_library": "ライブラリから選ぶ",
     "take_a_photo": "写真を撮る",
+    "done": "完了",
     "cancel": "キャンセル"
   },
   "top": {
