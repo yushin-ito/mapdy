@@ -1,13 +1,9 @@
 import { Button } from "@/components/Button";
+import { X } from "@tamagui/lucide-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  ActivityIndicator,
-  Image,
-  View,
-  useWindowDimensions,
-} from "react-native";
+import { Image, TouchableOpacity, useWindowDimensions } from "react-native";
 import {
   Gesture,
   GestureDetector,
@@ -20,14 +16,16 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
-import { Stack, Text, XStack, YStack } from "tamagui";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Spinner, View, XStack, YStack } from "tamagui";
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
 
 const CropPage = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("crop");
   const { uri } = useLocalSearchParams<{ uri?: string }>();
   const { width, height } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -46,8 +44,6 @@ const CropPage = () => {
   const diameter = width * 0.9;
   const radius = diameter / 2;
 
-  const overlayBorderThickness = Math.max(width, height) * 1.5;
-
   useEffect(() => {
     if (uri) {
       setIsLoading(true);
@@ -57,22 +53,15 @@ const CropPage = () => {
             width: diameter,
             height: height * (diameter / width),
           };
-          translateX.value = withTiming(0, { duration: 50 });
-          translateY.value = withTiming(
-            (diameter - height * (diameter / width)) / 2,
-            { duration: 50 }
-          );
         } else {
           size.value = {
             width: width * (diameter / height),
             height: diameter,
           };
-          translateX.value = withTiming(
-            (diameter - width * (diameter / height)) / 2,
-            { duration: 50 }
-          );
-          translateY.value = withTiming(0, { duration: 50 });
         }
+
+        translateX.value = withTiming(0, { duration: 50 });
+        translateY.value = withTiming(0, { duration: 50 });
 
         scale.value = withTiming(1, { duration: 50 });
 
@@ -85,22 +74,21 @@ const CropPage = () => {
 
   const worklet = () => {
     "worklet";
-    if (!size.value) return;
+    if (!size.value) {
+      return;
+    }
 
-    const currentWidth = size.value.width * scale.value;
-    const currentHeight = size.value.height * scale.value;
-
-    const maxOffsetX = Math.max((currentWidth - diameter) / 2, 0);
-    const maxOffsetY = Math.max((currentHeight - diameter) / 2, 0);
-
-    translateX.value = Math.min(
-      Math.max(translateX.value, -maxOffsetX),
-      maxOffsetX
+    const offsetX = Math.max(
+      (size.value.width * scale.value - diameter) / 2,
+      0
     );
-    translateY.value = Math.min(
-      Math.max(translateY.value, -maxOffsetY),
-      maxOffsetY
+    const offsetY = Math.max(
+      (size.value.height * scale.value - diameter) / 2,
+      0
     );
+
+    translateX.value = Math.min(Math.max(translateX.value, -offsetX), offsetX);
+    translateY.value = Math.min(Math.max(translateY.value, -offsetY), offsetY);
   };
 
   const panGesture = Gesture.Pan()
@@ -112,6 +100,7 @@ const CropPage = () => {
       if (!size.value) {
         return;
       }
+
       translateX.value = startTranslateX.value + event.translationX;
       translateY.value = startTranslateY.value + event.translationY;
       worklet();
@@ -155,73 +144,73 @@ const CropPage = () => {
 
   if (isLoading) {
     return (
-      <Stack flex={1} justify="center" items="center" bg="$background">
-        <ActivityIndicator size="large" color="$color" />
-        <Text mt="$2">Loading Image...</Text>
-      </Stack>
+      <View flex={1} justify="center" items="center" bg="black">
+        <Spinner color="white" />
+      </View>
     );
   }
 
   return (
     <YStack flex={1} bg="black">
+      <XStack
+        position="absolute"
+        t="$0"
+        w="100%"
+        z="$50"
+        items="center"
+        justify="space-between"
+        pt={insets.top + 10}
+        px="$6"
+        pb={10}
+        bg="black"
+      >
+        <Button variant="link" onPress={router.back}>
+          <Button.Text color="white">{t("cancel")}</Button.Text>
+        </Button>
+        <Button h="$7" px="$5" py="$1" rounded="$full" onPress={() => {}}>
+          <Button.Text>{t("done")}</Button.Text>
+        </Button>
+      </XStack>
       <GestureDetector gesture={Gesture.Simultaneous(panGesture, pinchGesture)}>
         <Animated.View
           style={{
             position: "absolute",
-            top: 20,
+            top: insets.top + 20,
             left: 0,
             right: 0,
-            bottom: 20,
+            bottom: insets.bottom + 40,
             justifyContent: "center",
             alignItems: "center",
           }}
         >
           <AnimatedImage source={{ uri }} style={animatedStyles} />
           <View
-            style={{
-              position: "absolute",
-              width: diameter + 2 * overlayBorderThickness,
-              height: diameter + 2 * overlayBorderThickness,
-              borderRadius: radius + overlayBorderThickness,
-              borderWidth: overlayBorderThickness,
-              borderColor: "rgba(0, 0, 0, 0.7)",
-              left: width / 2 - (radius + overlayBorderThickness),
-              top: (height - 20 - 20) / 2 - (radius + overlayBorderThickness),
-            }}
+            position="absolute"
+            t={
+              (height - insets.top - insets.bottom - 60) / 2 -
+              (radius + Math.max(width, height) * 1.5)
+            }
+            l={width / 2 - (radius + Math.max(width, height) * 1.5)}
+            w={diameter + 2 * Math.max(width, height) * 1.5}
+            h={diameter + 2 * Math.max(width, height) * 1.5}
+            rounded={radius + Math.max(width, height) * 1.5}
+            borderColor="rgba(0, 0, 0, 0.7)"
+            borderWidth={Math.max(width, height) * 1.5}
             pointerEvents="none"
           />
           <View
-            style={{
-              position: "absolute",
-              width: diameter,
-              height: diameter,
-              borderRadius: radius,
-              borderWidth: 1,
-              borderColor: "white",
-              left: width / 2 - radius,
-              top: (height - 20 - 20) / 2 - radius,
-            }}
+            position="absolute"
+            t={(height - insets.top - insets.bottom - 60) / 2 - radius}
+            l={width / 2 - radius}
+            w={diameter}
+            h={diameter}
+            rounded={radius}
+            borderColor="white"
+            borderWidth={1}
             pointerEvents="none"
           />
         </Animated.View>
       </GestureDetector>
-      <XStack
-        position="absolute"
-        b={20}
-        w="90%"
-        self="center"
-        justify="space-between"
-        px="$2"
-      >
-        <Button onPress={router.back} size="$4" chromeless>
-          <Button.Text color="white">{t("cancel")}</Button.Text>
-        </Button>
-        <Button onPress={() => {}} size="$4">
-          <Button.Text color="white" fontWeight="bold">
-            {t("done")}
-          </Button.Text>
-        </Button>
-      </XStack>
     </YStack>
   );
 };

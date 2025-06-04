@@ -7,12 +7,8 @@ import { Link, useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import {
-  Keyboard,
-  Pressable,
-  SafeAreaView,
-  TouchableOpacity,
-} from "react-native";
+import { Keyboard, TouchableOpacity } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Avatar,
   Form,
@@ -124,9 +120,7 @@ const AvatarPage = () => {
                   open={isOpen}
                   onOpenChange={setIsOpen}
                   onImagePicked={(uri) => {
-                    router.push(
-                      `/onboarding/avatar/crop?uri=${encodeURIComponent(uri)}`
-                    );
+                    router.push(`/crop?uri=${encodeURIComponent(uri)}`);
                     setIsOpen(false);
                   }}
                 />

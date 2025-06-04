@@ -18,6 +18,7 @@ import { useEffect } from "react";
 import { AppState, useColorScheme } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Toaster } from "sonner-native";
 import { PortalProvider, TamaguiProvider } from "tamagui";
 
@@ -61,13 +62,15 @@ const RootLayout = () => {
           <ThemeProvider>
             <PortalProvider shouldAddRootHost>
               <GestureHandlerRootView>
-                <KeyboardProvider>
-                  <StatusBar
-                    style={colorScheme === "dark" ? "light" : "dark"}
-                  />
-                  <RootNavigator />
-                  <Toaster />
-                </KeyboardProvider>
+                <SafeAreaProvider>
+                  <KeyboardProvider>
+                    <StatusBar
+                      style={colorScheme === "dark" ? "light" : "dark"}
+                    />
+                    <RootNavigator />
+                    <Toaster />
+                  </KeyboardProvider>
+                </SafeAreaProvider>
               </GestureHandlerRootView>
             </PortalProvider>
           </ThemeProvider>

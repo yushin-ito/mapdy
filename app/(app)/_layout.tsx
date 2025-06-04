@@ -16,6 +16,7 @@ const AppLayout = () => {
       <Stack.Protected guard={!user}>
         <Stack.Screen name="onboarding" />
       </Stack.Protected>
+      <Stack.Screen name="crop" />
     </Stack>
   );
 };

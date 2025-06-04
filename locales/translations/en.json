@@ -2,7 +2,6 @@
   "common": {
     "choose_from_library": "Choose from library",
     "take_a_photo": "Take a photo",
-    "done": "Done",
     "cancel": "Cancel"
   },
   "top": {
@@ -63,5 +62,9 @@
       "submit": "Get Started",
       "skip": "Skip"
     }
+  },
+  "crop": {
+    "done": "Done",
+    "cancel": "Cancel"
   }
 }

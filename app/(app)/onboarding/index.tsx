@@ -5,8 +5,9 @@ import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { Link, useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Keyboard, SafeAreaView, TouchableWithoutFeedback } from "react-native";
+import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { KeyboardStickyView } from "react-native-keyboard-controller";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Form, H1, Label, Text, View, XStack, YStack } from "tamagui";
 import type { z } from "zod/v4";
 
