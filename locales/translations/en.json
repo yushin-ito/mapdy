@@ -1,5 +1,10 @@
 {
   "common": {
+    "map": "Map",
+    "discover": "Discover",
+    "create": "Create",
+    "messages": "Messages",
+    "settings": "Settings",
     "choose_from_library": "Choose from library",
     "take_a_photo": "Take a photo",
     "cancel": "Cancel"

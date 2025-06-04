@@ -1,5 +1,10 @@
 {
   "common": {
+    "map": "マップ",
+    "discover": "見つける",
+    "create": "募集する",
+    "messages": "メッセージ",
+    "settings": "設定",
     "choose_from_library": "ライブラリから選ぶ",
     "take_a_photo": "写真を撮る",
     "cancel": "キャンセル"

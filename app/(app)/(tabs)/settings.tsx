@@ -6,7 +6,7 @@ import { toast } from "sonner-native";
 import { YStack } from "tamagui";
 
 const SettingsPage = () => {
-  const { t } = useTranslation("walkthrough");
+  const { t } = useTranslation("settings");
 
   const { mutateAsync: mutateAsyncSignOut } = useSignOut({
     onSuccess: () => {
