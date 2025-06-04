@@ -1,8 +1,20 @@
-import { useUser } from "@/hooks/useUser";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/utils/supabase";
+import { useQuery } from "@supabase-cache-helpers/postgrest-react-query";
 import { Stack } from "expo-router";
 
 const AppLayout = () => {
-  const { data: user, isLoading } = useUser();
+  const { session } = useAuth();
+
+  const { data: user, isLoading } = useQuery(
+    supabase
+      .from("users")
+      .select("*")
+      .eq("userId", session?.user.id ?? ""),
+    {
+      enabled: false,
+    }
+  );
 
   if (isLoading) {
     return null;

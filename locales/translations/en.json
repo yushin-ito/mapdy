@@ -60,7 +60,8 @@
       "description": "This avatar will be visible to other users. You can change it later.",
       "label": "Avatar",
       "submit": "Get Started",
-      "skip": "Skip"
+      "skip": "Skip",
+      "error": "Something went wrong. Please try again."
     }
   },
   "crop": {

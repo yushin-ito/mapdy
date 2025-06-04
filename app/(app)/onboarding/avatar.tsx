@@ -1,7 +1,10 @@
 import { Button } from "@/components/Button";
 import { ImagePickerSheet } from "@/components/ImagePickerSheet";
+import { useAuth } from "@/hooks/useAuth";
 import { onboardingSchema } from "@/schemas/app";
+import { supabase } from "@/utils/supabase";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
+import { useInsertMutation } from "@supabase-cache-helpers/postgrest-react-query";
 import { Image, UserRound } from "@tamagui/lucide-icons";
 import { Link, useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
@@ -9,6 +12,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Keyboard, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { toast } from "sonner-native";
 import {
   Avatar,
   Form,
@@ -26,6 +30,7 @@ type FormData = z.infer<typeof avatarUrlSchema>;
 
 const AvatarPage = () => {
   const { t } = useTranslation("onboarding");
+  const { session } = useAuth();
   const router = useRouter();
   const { name } = useLocalSearchParams<{ name?: string }>();
   const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +42,29 @@ const AvatarPage = () => {
     resolver: standardSchemaResolver(avatarUrlSchema),
   });
 
-  const onSubmit = (data: FormData) => {};
+  const { mutateAsync } = useInsertMutation(
+    supabase.from("users"),
+    ["id"],
+    "*",
+    {
+      onSuccess: () => {
+        router.push("/(tabs)");
+      },
+      onError: () => {
+        toast.error(t("avatar.error"));
+      },
+    }
+  );
+
+  const onSubmit = (data: FormData) => {
+    mutateAsync([
+      {
+        id: session?.user.id ?? "",
+        name: name ?? "",
+        avatar_url: data.avatarUrl,
+      },
+    ]);
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

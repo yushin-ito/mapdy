@@ -103,30 +103,24 @@ export type Database = {
       }
       users: {
         Row: {
-          color: string | null
+          avatar_url: string | null
           created_at: string
-          grade: number | null
           id: string
           name: string | null
-          school: string | null
           updated_at: string
         }
         Insert: {
-          color?: string | null
+          avatar_url?: string | null
           created_at?: string
-          grade?: number | null
           id: string
           name?: string | null
-          school?: string | null
           updated_at?: string
         }
         Update: {
-          color?: string | null
+          avatar_url?: string | null
           created_at?: string
-          grade?: number | null
           id?: string
           name?: string | null
-          school?: string | null
           updated_at?: string
         }
         Relationships: []

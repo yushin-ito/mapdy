@@ -1,4 +1,9 @@
 import { Button } from "@/components/Button";
+import {
+  FlipType,
+  SaveFormat,
+  useImageManipulator,
+} from "expo-image-manipulator";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -25,6 +30,8 @@ const CropPage = () => {
   const { uri } = useLocalSearchParams<{ uri?: string }>();
   const { width, height } = useWindowDimensions();
   const insets = useSafeAreaInsets();
+
+  const context = useImageManipulator(uri ?? "");
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -129,7 +136,10 @@ const CropPage = () => {
     });
 
   const animatedStyles = useAnimatedStyle(() => {
-    if (!size.value) return {};
+    if (!size.value) {
+      return {};
+    }
+
     return {
       width: size.value.width,
       height: size.value.height,
@@ -140,6 +150,25 @@ const CropPage = () => {
       ],
     };
   });
+
+  const crop = async () => {
+    if (!uri) {
+      return;
+    }
+
+    context.crop({
+      originX: radius - translateX.value / scale.value,
+      originY: radius - translateY.value / scale.value,
+      width: diameter / scale.value,
+      height: diameter / scale.value,
+    });
+    const image = await context.renderAsync();
+    const result = await image.saveAsync({
+      format: SaveFormat.PNG,
+    });
+
+    console.log(result);
+  };
 
   if (isLoading) {
     return (
@@ -166,7 +195,7 @@ const CropPage = () => {
         <Button variant="link" onPress={router.back}>
           <Button.Text color="white">{t("cancel")}</Button.Text>
         </Button>
-        <Button h="$7" px="$5" py="$1" rounded="$full" onPress={() => {}}>
+        <Button h="$7" px="$5" py="$1" rounded="$full" onPress={crop}>
           <Button.Text>{t("done")}</Button.Text>
         </Button>
       </XStack>
