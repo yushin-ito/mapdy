@@ -73,7 +73,7 @@ const RootLayout = () => {
 
             const subscription = AppState.addEventListener(
               "change",
-              onAppStateChange
+              onAppStateChange,
             );
 
             return () => {

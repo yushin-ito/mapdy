@@ -76,7 +76,7 @@ const CalendarPage = () => {
     {
       orderBy: "created_at",
       uqOrderBy: "id",
-    }
+    },
   );
 
   const sections = useMemo(() => {
@@ -88,7 +88,7 @@ const CalendarPage = () => {
       posts.flat(),
       R.groupBy((post) => format(new Date(post.created_at), "yyyy-MM-dd")),
       R.entries(),
-      R.map(([title, data]) => ({ title, data }))
+      R.map(([title, data]) => ({ title, data })),
     );
 
     return result;
@@ -101,7 +101,7 @@ const CalendarPage = () => {
         acc[section.title] = { marked: true };
         return acc;
       },
-      {} as Record<string, { marked: boolean }>
+      {} as Record<string, { marked: boolean }>,
     );
   }, [sections]);
 
