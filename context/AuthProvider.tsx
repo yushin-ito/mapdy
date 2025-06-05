@@ -1,4 +1,4 @@
-import { supabase } from "@/utils/supabase";
+import { supabase } from "@/lib/client";
 import type { Session } from "@supabase/supabase-js";
 import { type ReactNode, createContext, useEffect, useState } from "react";
 
@@ -8,7 +8,7 @@ type AuthContextType = {
 };
 
 export const AuthContext = createContext<AuthContextType | undefined>(
-  undefined,
+  undefined
 );
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {

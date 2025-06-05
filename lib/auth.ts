@@ -1,17 +1,27 @@
-import type { UseMutationResult } from "@/types";
-import { supabase } from "@/utils/supabase";
-import type { AuthError, Provider } from "@supabase/supabase-js";
-import { useMutation } from "@tanstack/react-query";
+import type { Provider } from "@supabase/supabase-js";
 import { makeRedirectUri } from "expo-auth-session";
 import * as QueryParams from "expo-auth-session/build/QueryParams";
 import * as WebBrowser from "expo-web-browser";
-
-export type SignInWithOAuthResponse = Awaited<
-  ReturnType<typeof signInWithOAuth>
->;
+import { supabase } from "./client";
 
 WebBrowser.maybeCompleteAuthSession();
+
 const redirectTo = makeRedirectUri();
+
+export const signInWithEmail = async (email: string) => {
+  const { data, error } = await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      emailRedirectTo: redirectTo,
+    },
+  });
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+};
 
 const getSessionFromUrl = async (url: string) => {
   const { params, errorCode } = QueryParams.getQueryParams(url);
@@ -36,7 +46,7 @@ const getSessionFromUrl = async (url: string) => {
   return data.session;
 };
 
-const signInWithOAuth = async (provider: Provider) => {
+export const signInWithOAuth = async (provider: Provider) => {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider,
     options: {
@@ -57,12 +67,22 @@ const signInWithOAuth = async (provider: Provider) => {
   return res;
 };
 
-export const useSignInWithOAuth = ({
-  onSuccess,
-  onError,
-}: UseMutationResult<SignInWithOAuthResponse, AuthError>) =>
-  useMutation({
-    mutationFn: signInWithOAuth,
-    onSuccess,
-    onError,
+export const verifyOtp = async (email: string, token: string) => {
+  const { data, error } = await supabase.auth.verifyOtp({
+    email,
+    token,
+    type: "email",
   });
+  if (error) {
+    throw error;
+  }
+
+  return data;
+};
+
+export const signOut = async () => {
+  const { error } = await supabase.auth.signOut();
+  if (error) {
+    throw error;
+  }
+};

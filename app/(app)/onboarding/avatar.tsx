@@ -1,10 +1,10 @@
 import { Button } from "@/components/Button";
 import { ImagePickerSheet } from "@/components/ImagePickerSheet";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/lib/client";
 import { onboardingSchema } from "@/schemas/app";
-import { supabase } from "@/utils/supabase";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
-import { useInsertMutation } from "@supabase-cache-helpers/postgrest-react-query";
+import { useInsertMutation } from "@supabase-cache-helpers/postgrest-swr";
 import { Image, UserRound } from "@tamagui/lucide-icons";
 import { useLocalSearchParams, usePathname, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
@@ -44,19 +44,14 @@ const AvatarPage = () => {
     resolver: standardSchemaResolver(avatarUrlSchema),
   });
 
-  const { mutateAsync } = useInsertMutation(
-    supabase.from("users"),
-    ["id"],
-    "*",
-    {
-      onSuccess: () => {
-        router.push("/");
-      },
-      onError: () => {
-        toast.error(t("avatar.error"));
-      },
+  const { trigger } = useInsertMutation(supabase.from("users"), ["id"], "*", {
+    onSuccess: () => {
+      router.push("/");
     },
-  );
+    onError: () => {
+      toast.error(t("avatar.error"));
+    },
+  });
 
   useEffect(() => {
     if (uri) {
@@ -65,7 +60,7 @@ const AvatarPage = () => {
   }, [uri, setValue]);
 
   const onSubmit = (data: FormData) => {
-    mutateAsync([
+    trigger([
       {
         id: session?.user.id ?? "",
         name: name ?? null,
@@ -75,7 +70,7 @@ const AvatarPage = () => {
   };
 
   const onSkip = () => {
-    mutateAsync([
+    trigger([
       {
         id: session?.user.id ?? "",
         name: name ?? null,

@@ -1,7 +1,6 @@
 import { Button } from "@/components/Button";
 import { OtpInput } from "@/components/OtpInput";
-import { useSignInWithEmail } from "@/hooks/useSignInWithEmail";
-import { useVerifyOtp } from "@/hooks/useVerifyOtp";
+import { signInWithEmail, verifyOtp } from "@/lib/auth";
 import { ChevronLeft } from "@tamagui/lucide-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
@@ -13,30 +12,18 @@ const VerifyPage = () => {
   const { t } = useTranslation("verify");
   const { email } = useLocalSearchParams<{ email: string }>();
 
-  const { mutateAsync: mutateAsyncVerifyOtp } = useVerifyOtp({
-    onError: () => {
-      toast.error(t("error"));
-    },
-  });
-
-  const { mutateAsync: mutateAsyncSignInWithEmail } = useSignInWithEmail({
-    onSuccess: () => {
-      toast.success(t("success"));
-    },
-    onError: () => {
-      toast.error(t("error"));
-    },
-  });
-
   const onEnter = (code: number) => {
-    mutateAsyncVerifyOtp({
-      email: email as string,
-      token: code.toString(),
-    });
+    verifyOtp(email, code.toString());
   };
 
-  const onResend = () => {
-    mutateAsyncSignInWithEmail(email);
+  const onResend = async () => {
+    try {
+      await signInWithEmail(email);
+
+      toast.success(t("success"));
+    } catch {
+      toast.error(t("error"));
+    }
   };
 
   return (

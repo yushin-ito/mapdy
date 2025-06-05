@@ -1,6 +1,6 @@
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/utils/supabase";
-import { useQuery } from "@supabase-cache-helpers/postgrest-react-query";
+import { supabase } from "@/lib/client";
+import { useQuery } from "@supabase-cache-helpers/postgrest-swr";
 import { Stack } from "expo-router";
 
 const AppLayout = () => {
@@ -9,9 +9,9 @@ const AppLayout = () => {
   const { data: user, isLoading } = useQuery(
     supabase
       .from("users")
-      .select("*")
+      .select("id")
       .eq("id", session?.user.id ?? "")
-      .single(),
+      .single()
   );
 
   if (isLoading) {

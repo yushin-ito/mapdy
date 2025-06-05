@@ -1,8 +1,7 @@
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { OAuthLogInButton } from "@/components/OAuthLogInButton";
-import { useSignInWithEmail } from "@/hooks/useSignInWithEmail";
-import { useSignInWithOAuth } from "@/hooks/useSignInWithOAuth";
+import { signInWithEmail, signInWithOAuth } from "@/lib/auth";
 import { loginSchema } from "@/schemas/auth";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { ChevronLeft } from "@tamagui/lucide-icons";
@@ -22,33 +21,25 @@ const SignupPage = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
-    getValues,
+    formState: { errors, isLoading },
   } = useForm<FormData>({
     resolver: standardSchemaResolver(loginSchema),
   });
 
-  const {
-    mutateAsync: mutateAsyncSignInWithEmail,
-    isPending: isLoadingSignInWithEmail,
-  } = useSignInWithEmail({
-    onSuccess: () => {
+  const onSubmit = async (data: FormData) => {
+    try {
+      await signInWithEmail(data.email);
+
       toast.success(t("success"));
-      router.push(`/verify?email=${getValues("email")}`);
-    },
-    onError: () => {
+      router.push({
+        pathname: "/verify",
+        params: {
+          email: data.email,
+        },
+      });
+    } catch {
       toast.error(t("error"));
-    },
-  });
-
-  const { mutateAsync: mutateAsyncSignInWithOAuth } = useSignInWithOAuth({
-    onError: () => {
-      toast.error(t("error"));
-    },
-  });
-
-  const onSubmit = (data: FormData) => {
-    mutateAsyncSignInWithEmail(data.email);
+    }
   };
 
   return (
@@ -87,9 +78,9 @@ const SignupPage = () => {
             </YStack>
           )}
         />
-        <Form.Trigger asChild disabled={isLoadingSignInWithEmail}>
+        <Form.Trigger asChild disabled={isLoading}>
           <Button variant="primary">
-            {isLoadingSignInWithEmail ? (
+            {isLoading ? (
               <Button.Icon>
                 <Spinner color="white" />
               </Button.Icon>
@@ -121,21 +112,39 @@ const SignupPage = () => {
         <OAuthLogInButton
           boxShadow="$shadow.xs"
           provider="google"
-          onPress={() => mutateAsyncSignInWithOAuth("google")}
+          onPress={() => {
+            try {
+              signInWithOAuth("google");
+            } catch {
+              toast.error(t("error"));
+            }
+          }}
         >
           {t("signup_with_provider", { provider: "Google" })}
         </OAuthLogInButton>
         <OAuthLogInButton
           boxShadow="$shadow.xs"
           provider="apple"
-          onPress={() => mutateAsyncSignInWithOAuth("apple")}
+          onPress={() => {
+            try {
+              signInWithOAuth("apple");
+            } catch {
+              toast.error(t("error"));
+            }
+          }}
         >
           {t("signup_with_provider", { provider: "Apple" })}
         </OAuthLogInButton>
         <OAuthLogInButton
           boxShadow="$shadow.xs"
           provider="twitter"
-          onPress={() => mutateAsyncSignInWithOAuth("twitter")}
+          onPress={() => {
+            try {
+              signInWithOAuth("twitter");
+            } catch {
+              toast.error(t("error"));
+            }
+          }}
         >
           {t("signup_with_provider", { provider: "Twitter" })}
         </OAuthLogInButton>
